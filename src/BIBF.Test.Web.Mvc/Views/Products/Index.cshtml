@@ -1,0 +1,176 @@
+﻿@using BIBF.Test.Authorization
+@using BIBF.Test.Web.Models.Products
+@using BIBF.Test.Web.Startup
+@model ProductsViewModel
+@{
+    ViewBag.CurrentPageName = PageNames.Products;
+}
+@section Scripts
+{
+    <script src="~/view-resources/Views/Products/Index.js" asp-append-version="true"></script>
+}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1 style="display: inline;">@L("Products")</h1>
+
+                @if (IsGranted(PermissionNames.Pages_Products))
+                {
+                    <a href="\Products\CreateOrEdit" style="margin-left: 5%; float: none !important; vertical-align: top;" class="btn bg-blue float-sm-right"><i class="fa fa-plus"></i> @L("Create")</a>
+                }
+            </div>
+           
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <form id="ProductSearchForm" class="form-horizontal">
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-6">
+                                    <div class="abp-advanced-search">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+
+                                            </div>
+                                            <input type="text" id="Filter" name="filter" class="form-control m-input" placeholder="Search Name" value="@Model.FilterText">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <button id="GetProductButton" type="button" class="btn bg-blue btn-search">
+                                        <span class="fas fa-search" aria-hidden="true"> </span>
+                                        Search
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="ProductTable" class="display table table-striped table-bordered table-hover dt-responsive nowrap">
+                    <thead>
+                        <tr>
+
+                            <th>@L("Name")</th>
+                            <th>@L("Description")</th>
+                            <th>@L("Price")</th>
+                            <th>@L("Actions")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+@*<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+
+                    <div class="kt-subheader kt-grid__item">
+                      <div class="">
+                        <div class="kt-subheader__main">
+                            <h3 class="kt-subheader__title">
+                                <span>@L("Product")</span>
+                            </h3>
+                            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                            <span class="kt-subheader__desc">
+                                @L("ProductHeaderInfo")
+                            </span>
+                        </div>
+                        <div class="kt-subheader__toolbar">
+                            <div class="kt-subheader__wrapper">
+                                <button id="ExportToExcelButton" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> @L("ExportToExcel")</button>
+                @if (IsGranted(PermissionNames.Pages_Product))
+                                {
+                                    <a href="\App\Product\CreateOrEdit" class="btn btn-primary blue"><i class="fa fa-plus"></i> @L("CreateNewVehicleNote")</a>
+                                }
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+
+    <div class=" kt-grid__item kt-grid__item--fluid">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <div class="kt-form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-12">
+                            <div class="form-group align-items-center">
+                                <div class="input-group">
+                                    <input type="text" id="ProductTableFilter" class="form-control m-input" placeholder="@L("SearchWithThreeDot")" value="@Model.FilterText">
+                                    <span class="input-group-btn">
+                                        <button id="GetProductButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="kt-separator kt-separator--border-dashed"></div>
+                        </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="NoteFilterId">@L("Note")</label>
+                                        <input type="text" class="form-control" name="noteFilter" id="NoteFilterId">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="MinNoteDateFilterId">@L("NoteDateRange")</label>
+                                            <div class="input-group">
+                                                <input class="form-control m-input date-picker" type="text" placeholder="@L("MinValue")"  id="MinNoteDateFilterId">
+                                                <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                                <input class="form-control m-input date-picker" type="text" placeholder="@L("MaxValue")"  id="MaxNoteDateFilterId">
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="VehicleNameFilterId">(@L("Vehicle")) @L("Name")</label>
+                                        <input type="text" class="form-control" name="vehicleNameFilter" id="VehicleNameFilterId">
+                                    </div>
+                                </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-xl-12">
+                            <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                            <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                        </div>
+                    </div>
+                <div class="row align-items-center">
+                    <table id="ProductTable" class="display table table-striped table-bordered table-hover dt-responsive nowrap">
+                        <thead>
+                            <tr>
+                                <th>@L("Actions")</th>
+                                    <th>@L("Note")</th>
+                                    <th>@L("NoteDate")</th>
+                                    <th>@L("VehicleName")</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>*@

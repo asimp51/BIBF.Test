@@ -1,0 +1,98 @@
+﻿
+@using System.Globalization
+@using BIBF.Test.Authorization
+@using BIBF.Test.Web.Models.Products
+@using BIBF.Test.Web.Startup
+@model CreateOrEditProductViewModel
+
+@{
+    ViewBag.CurrentPageName = PageNames.Products;
+}
+@section Scripts
+{
+    <script src="~/view-resources/Views/Products/CreateOrEdit.js" asp-append-version="true"></script>
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@L("Products")</h1>
+            </div>
+           
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div id="myNav" class="overlay">
+        <div class="overlay-content">
+            <div id="custLoader" class="container">
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div style="background-color:#35aaff" class="card-header">
+                        <h3 class="card-title">
+                            @(Model.IsEditMode ? (L("Edit")) : L("Create"))
+                        </h3>
+                        @*<a class="btn btn-default" style="float:right; color: black" href='@Url.Action("","TblBranchContacts")'>
+                View @L("TblBranchContacts")
+            </a>*@
+                    </div>
+                    <form name="ProductInformationsForm" role="form" novalidate class="form-validation">
+                        @if (Model.IsEditMode)
+                        {
+                            <input type="hidden" name="id" value="@Model.Product.Id" />
+                        }
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+
+                                            <div class="form-group">
+                                                <label for="Product_Name">@L("Name")</label>
+                                                <input class="form-control" id="Product_Name" value="@Model.Product.Name" type="text" name="name" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+
+                                            <div class="form-group position-relative">
+                                                <label for="Product_Description">@L("Description")</label>
+                                                <input class="form-control" id="Product_Description" type="text" name="description" value="@Model.Product.Description" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group position-relative">
+                                                <label for="Product_Price">@L("Price")</label>
+                                                <input class="form-control" id="Product_Price" type="number" name="price" value="@Model.Product.Price" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <a href="#" id="saveBtn" class="btn btn-primary">Save</a>
+                            @*<button type="button" id="btnCancel" class="btn btn-primary">Cancel</button>*@
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
